@@ -34,28 +34,10 @@
                             <input type="text" value="{{ $asset->kategori->nama_kategori }}" class="form-control"
                                 readonly>
                         </div>
-                        <div class="form-group">
-                            <label>Nomor Unit</label>
-                            <input type="text" value="{{ $asset->nomor_unit }}" class="form-control" readonly>
-                        </div>
-                        <div class="form-group">
-                            <label>Kode Perkiraan</label>
-                            <input type="text" value="{{ $asset->kode_perkiraan }}" class="form-control"
-                                readonly>
-                        </div>
+                     
                         <div class="form-group">
                             <label>Kode asset</label>
-                            <input type="text" value="{{ $asset->kode_asset }}" class="form-control"
-                                readonly>
-                        </div>
-                        <div class="form-group">
-                            <label>Sub kode</label>
-                            <input type="text" value="{{ $asset->sub_kode }}" class="form-control"
-                                readonly>
-                        </div>
-                        <div class="form-group">
-                            <label>Lokasi</label>
-                            <input type="text" value="{{ $asset->lokasi }}" class="form-control"
+                            <input type="text" value="{{ 'PDAM-'.sprintf("%05d", $asset->kode_asset )}}" class="form-control"
                                 readonly>
                         </div>
                         <div class="form-group">
@@ -63,6 +45,12 @@
                             <input type="text" value="{{ $asset->uraian }}" class="form-control"
                                 readonly>
                         </div>
+                        <div class="form-group">
+                            <label>Lokasi</label>
+                            <input type="text" value="{{ $asset->lokasi }}" class="form-control"
+                                readonly>
+                        </div>
+                     
                         <div class="form-group">
                             <label>Harga</label>
                             <input type="text" value="{{ Rupiah($asset->harga) }}" class="form-control"
@@ -89,9 +77,13 @@
                                 readonly>
                         </div>
                         <div class="form-group">
-                            <label>Masa</label>
+                            <label>Kondisi</label>
                             <input type="text" value="{{ $asset->kondisi }}" class="form-control"
                                 readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>Gambar Assets</label> <br>
+                            <img width="500" height="300" src="{{ asset('storage/'. $asset->gambar) }}" alt="">
                         </div>
                     </div>
                 </div>

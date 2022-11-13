@@ -18,15 +18,13 @@ return new class extends Migration
             $table->foreignId('satuan_id', 5)->nullable();
             $table->foreignId('golongan_id', 5)->nullable();
             $table->foreignId('kategori_id', 5)->nullable();
-            $table->string('nomor_unit', 25)->nullable();
-            $table->string('kode_perkiraan', 25)->nullable();
             $table->string('kode_asset', 25)->nullable();
-            $table->string('sub_kode', 25)->nullable();
             $table->string('lokasi', 150)->nullable();
-            $table->text('uraian')->nullable();
+            $table->string('nama_asset')->nullable();
             $table->string('harga')->nullable();
             $table->string('jumlah', 5)->nullable();
             $table->string('masa', 2)->nullable();
+            $table->string('gambar')->nullable();
             $table->string('kondisi', 15)->nullable();
             $table->timestamps();
         });

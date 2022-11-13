@@ -14,7 +14,10 @@ use App\Http\Controllers\backsite\KategoriController;
 use App\Http\Controllers\UserManegement\RoleController;
 use App\Http\Controllers\UserManegement\UserController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\backsite\Cetak;
 use App\Http\Controllers\backsite\LaporanAssets;
+use App\Http\Controllers\backsite\Pengembalian;
+use App\Http\Controllers\backsite\Pinjaman;
 
 /*
 |--------------------------------------------------------------------------
@@ -61,9 +64,33 @@ Route::prefix('webapp')->middleware(['auth', 'verified'])->group(function () {
     Route::resource('golongan', GolonganController::class)->except('show');
     // satuan
     Route::resource('satuan', SatuanController::class)->except('show');
-
+    
     // Laporan assets
-    Route::get('/laporan', [LaporanAssets::class, 'index'])->name('laporanassset.index');
+    Route::get('/laporan/asset', [LaporanAssets::class, 'index'])->name('laporanassset.index');
+    Route::get('/laporan/stok', [LaporanAssets::class, 'laporan_stok'])->name('laporan_stok.stok');
+    Route::get('/laporan/pinjam', [LaporanAssets::class, 'laporan_pinjam'])->name('laporan_pinjam.pinjam');
+    Route::get('/laporan/kembali', [LaporanAssets::class, 'laporan_kembali'])->name('laporan_kembali.kembali');
+    
+    
+    // Transaksi Pinjaman
+    Route::resource('pinjaman', Pinjaman::class);
+
+    // Transaksi Pengembalian
+    Route::get('/pengembalian', [Pengembalian::class, 'index'])->name('kembali.index');
+    Route::get('/pengembalian/detail/{id}', [Pengembalian::class, 'detail'])->name('kembali.detail');
+    
+    Route::get('/pengembalian/{id}', [Pengembalian::class, 'show'])->name('kembali.show');
+    Route::post('/pengembalian', [Pengembalian::class, 'kembali'])->name('kembali.kembali');
+
+    
+    // Cetak Slip 
+    Route::get('/cetak/slippinjam/{transaksi}', [Cetak::class, 'cetakSlipPinjam'])->name('cetakSlipPinjam');
+    Route::get('/cetak/slipkembali/{transaksi}', [Cetak::class, 'cetakSlipKembali'])->name('cetakSlipKembali');
+    Route::get('/cetak/laporanpeminjaman', [Cetak::class, 'laporan_pinjam'])->name('laporan_pinjam');
+    Route::get('/cetak/laporanpengembalian', [Cetak::class, 'laporan_kembali'])->name('laporan_kembali');
+
+
+
     
 
 

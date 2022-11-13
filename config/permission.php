@@ -28,7 +28,25 @@ return [
             'satuan_delete'
         ],
         'manage_laporan' => [
-            'laporan_show'
+            'laporan_show',
+            'laporan_pinjam',
+            'laporan_kembali',
+            'laporan_stok'
+        ],
+
+        'manage_pinjam' => [
+            'pinjam_show',
+            'pinjam_create',
+            'pinjam_update',
+            'pinjam_detail',
+            'pinjam_delete'
+        ],
+        'manage_kembali' => [
+            'kembali_show',
+            'kembali_create',
+            'kembali_update',
+            'kembali_detail',
+            'kembali_delete'
         ],
 
         'manage_roles' => [

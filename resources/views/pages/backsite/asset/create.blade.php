@@ -26,7 +26,7 @@
         <section class="content">
             <div class="container-fluid">
                 <div class="card">
-                    <form method="POST" action="{{ route('assets.store') }}">
+                    <form method="POST" action="{{ route('assets.store') }}" enctype="multipart/form-data">
                         @csrf
                         <div class="card-body">
                             <a href="{{ route('assets.index') }}" class="btn btn-danger mb-3"><i
@@ -38,7 +38,7 @@
                                 <select class="form-control @error('kategori') is-invalid @enderror" id="kategori"
                                     name="kategori" style="width: 100%;">
                                     @if (old('kategori'))
-                                        <option value="{{ old('kategori')->id }}" selected>
+                                        <option value="{{ old('kategori')->id }}">
                                             {{ old('kategori')->nama_kategori }}</option>
                                     @endif
                                 </select>
@@ -49,49 +49,27 @@
                                 @enderror
                             </div>
 
-                            <div class="form-group">
-                                <label for="name">Nomor Unit</label>
-                                <input type="number" id="nomorunit" name="nomorunit" value="{{ old('nomorunit') }}"
-                                    class="form-control @error('nomorunit') is-invalid @enderror"
-                                    placeholder="Masukan nama asset">
-                                @error('nomorunit')
-                                    <span class="invalid-feedback">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-
-                            <div class="form-group">
-                                <label for="name">Kode Perkiraan</label>
-                                <input type="number" id="kodeperkiraan" name="kodeperkiraan"
-                                    value="{{ old('koodeperkiraan') }}"
-                                    class="form-control @error('kodeperkiraan') is-invalid @enderror"
-                                    placeholder="Masukan kode perkiraan">
-                                @error('kodeperkiraan')
-                                    <span class="invalid-feedback">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
 
                             <div class="form-group">
                                 <label for="name">Kode asset</label>
-                                <input type="number" id="kodeasset" name="kodeasset" value="{{ old('kodeasset') }}"
+                                <input type="text" id="kodeasset" name="kodeasset" value="{{ old('kodeasset', $kode_asset) }}"
                                     class="form-control @error('kodeasset') is-invalid @enderror"
-                                    placeholder="Masukan kode asset">
+                                    placeholder="Masukan kode asset" readonly>
                                 @error('kodeasset')
                                     <span class="invalid-feedback">
                                         <strong>{{ $message }}</strong>
                                     </span>
                                 @enderror
+                                <small><i>Kode Asset Automatis</i></small>
                             </div>
 
+                            
                             <div class="form-group">
-                                <label for="name">Sub kode</label>
-                                <input type="number" id="subkode" name="subkode" value="{{ old('subkode') }}"
-                                    class="form-control @error('subkode') is-invalid @enderror"
-                                    placeholder="Masukan sub kode">
-                                @error('subkode')
+                                <label for="namaaset">Nama Asset/ Uraian</label>
+                                <input type="text" id="namaaset" name="namaaset" value="{{ old('namaaset') }}"
+                                    class="form-control @error('namaaset') is-invalid @enderror"
+                                    placeholder="Masukan nama asset">
+                                @error('namaaset')
                                     <span class="invalid-feedback">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -110,17 +88,6 @@
                                 @enderror
                             </div>
 
-                            <div class="form-group">
-                                <label for="namaaset">Nama Asset/ Uraian</label>
-                                <input type="text" id="namaaset" name="namaaset" value="{{ old('namaaset') }}"
-                                    class="form-control @error('namaaset') is-invalid @enderror"
-                                    placeholder="Masukan nama asset">
-                                @error('namaaset')
-                                    <span class="invalid-feedback">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
 
                             <div class="form-group">
                                 <label for="harga">Harga</label>
@@ -187,6 +154,23 @@
                                         <strong>{{ $message }}</strong>
                                     </span>
                                 @enderror
+                            </div>
+
+                            <div class="form-group">
+                                <label for="gambar">Gambar Asset</label>
+                                <div class="input-group mb-3">
+                                    <input type="file" class="form-control  @error('gambar') is-invalid @enderror"
+                                        id="gambar" name="gambar" accept="image/*"
+                                        aria-describedby="inputGroupFileAddon03" aria-label="Upload">
+                                    @error('gambar')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
+                                </div>
+                                <span>
+                                    <strong>**Format gambar jpeg, png, jpg</strong>
+                                </span>
                             </div>
 
                             <div class="form-group">

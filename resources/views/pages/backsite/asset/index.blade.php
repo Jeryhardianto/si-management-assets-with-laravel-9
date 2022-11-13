@@ -41,7 +41,6 @@
                             <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>Nomor Unit</th>
                                     <th>Kode Asset</th>
                                     <th>Uraian/Asset</th>
                                     <th>Jumlah</th>
@@ -52,8 +51,7 @@
                                 @forelse ($assets as $asset)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $asset->nomor_unit }}</td>
-                                        <td>{{ $asset->kode_asset }}</td>
+                                        <td>{{ 'PDAM-'.sprintf("%05d", $asset->kode_asset) }}</td>
                                         <td>{{ $asset->uraian }}</td>
                                         <td>{{ $asset->jumlah }}</td>
                                         <td>
@@ -107,15 +105,6 @@
                 "autoWidth": false,
                 "buttons": ["excel", "pdf", "print"]
             }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-            $('#example2').DataTable({
-                "paging": true,
-                "lengthChange": false,
-                "searching": false,
-                "ordering": true,
-                "info": true,
-                "autoWidth": false,
-                "responsive": true,
-            });
         });
     </script>
 @endpush

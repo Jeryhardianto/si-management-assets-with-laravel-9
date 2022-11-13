@@ -70,7 +70,15 @@ class AssetController extends Controller
      */
     public function create()
     {
-        return view('pages.backsite.asset.create');
+        $lastrecord = Asset::latest()->first();
+        if($lastrecord){
+            $kode_asset = 'PDAM-'.sprintf("%05d", $lastrecord->kode_asset+1);
+        }else{
+            $kode_asset = 'PDAM-'.sprintf("%05d", 0+1);
+        }
+        return view('pages.backsite.asset.create',[
+            'kode_asset' => $kode_asset
+        ]);
     }
 
     /**
@@ -81,12 +89,10 @@ class AssetController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->all());
+       
         $validator = Validator::make($request->all(),[
             "kategori" => "required",
-            "nomorunit" => "required",
-            "kodeperkiraan" => "required",
-            "kodeasset" => "required",
-            "subkode" => "required",
             "lokasi" => "required",
             "namaaset" => "required",
             "harga" => "required",
@@ -94,6 +100,7 @@ class AssetController extends Controller
             "satuan" => "required",
             "golongan" => "required",
             "masa" => "required",
+            'gambar'        => 'required|mimes:jpg,png,jpeg|max:4069',
             "kondisi" => "required"
        ],
        [],
@@ -104,14 +111,26 @@ class AssetController extends Controller
             $request['golongan'] = Golongan::select('id', 'nama_golongan')->find($request->golongan);
             return redirect()->back()->withInput($request->all())->withErrors($validator);
         }
+
+         
+        if ($request->file('gambar')) {
+            $data['gambar'] = $request->file('gambar')->store('upload');
+        }else{
+            $data['gambar'] = null;
+        }
         DB::beginTransaction();
+        $lastrecord = Asset::latest()->first();
+        if($lastrecord){
+            $kode_asset = $lastrecord->kode_asset+1;
+        }else{
+            $kode_asset = 0+1;
+        }
+
+
         try {
          Asset::create([
             "kategori_id" =>  $request->kategori,
-            "nomor_unit" => $request->nomorunit,
-            "kode_perkiraan" => $request->kodeperkiraan,
-            "kode_asset" => $request->kodeasset,
-            "sub_kode" => $request->subkode,
+            "kode_asset" => $kode_asset,
             "lokasi" => $request->lokasi,
             "uraian" => $request->namaaset,
             "harga" => str_replace('.','' ,$request->harga),
@@ -120,6 +139,7 @@ class AssetController extends Controller
             "golongan_id" => $request->golongan,
             "masa" => $request->masa,
             "kondisi" => $request->kondisi,
+            'gambar' =>  $data['gambar'],
             'created_at' => date('Y-m-d H:i:s')
          ]);
 
@@ -172,10 +192,6 @@ class AssetController extends Controller
     {
         $validator = Validator::make($request->all(),[
             "kategori" => "required",
-            "nomorunit" => "required",
-            "kodeperkiraan" => "required",
-            "kodeasset" => "required",
-            "subkode" => "required",
             "lokasi" => "required",
             "namaaset" => "required",
             "harga" => "required",
@@ -183,7 +199,8 @@ class AssetController extends Controller
             "satuan" => "required",
             "golongan" => "required",
             "masa" => "required",
-            "kondisi" => "required"
+            "kondisi" => "required",
+            'gambar'        => 'mimes:jpg,png,jpeg|max:4069'
        ],
        [],
         );
@@ -193,14 +210,16 @@ class AssetController extends Controller
             $request['golongan'] = Golongan::select('id', 'nama_golongan')->find($request->golongan);
             return redirect()->back()->withInput($request->all())->withErrors($validator);
         }
+        if ($request->file('gambar')) {
+            $data['gambar'] = $request->file('gambar')->store('upload');
+        }else{
+            $data['gambar'] = $request->gambarlama;
+        }
+
         DB::beginTransaction();
         try {
          Asset::where('id', $asset->id)->update([
             "kategori_id" =>  $request->kategori,
-            "nomor_unit" => $request->nomorunit,
-            "kode_perkiraan" => $request->kodeperkiraan,
-            "kode_asset" => $request->kodeasset,
-            "sub_kode" => $request->subkode,
             "lokasi" => $request->lokasi,
             "uraian" => $request->namaaset,
             "harga" => str_replace('.','' ,$request->harga),
@@ -208,6 +227,7 @@ class AssetController extends Controller
             "satuan_id" => $request->satuan,
             "golongan_id" => $request->golongan,
             "masa" => $request->masa,
+            'gambar' =>  $data['gambar'],
             "kondisi" => $request->kondisi,
             'updated_at' => date('Y-m-d H:i:s')
          ]);

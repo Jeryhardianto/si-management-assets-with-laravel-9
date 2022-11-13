@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Users')
+@section('title', 'List Transaksi Peminjaman')
 @section('content')
 
     <!-- BEGIN: Content-->
@@ -9,12 +9,12 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0">Users</h1>
+                        <h1 class="m-0">List Transaksi Peminjaman</h1>
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             {{-- <li class="breadcrumb-item"><a href="#">Home</a></li> --}}
-                            <li class="breadcrumb-item active">Users</li>
+                            <li class="breadcrumb-item active">List Transaksi Peminjaman</li>
                         </ol>
                     </div><!-- /.col -->
                 </div><!-- /.row -->
@@ -32,60 +32,77 @@
                     <!-- /.card-header -->
 
                     <div class="card-body">
-                        @can('user_create')
-                            <a href="{{ route('users.create') }}" class="btn btn-primary"><i class="fas fa-plus"></i> Tambah
-                                User</a>
+                        @can('pinjam_create')
+                            <a href="{{ route('pinjaman.create') }}" class="btn btn-primary mb-4"><i class="fas fa-plus"></i>
+                                Tambah Pengajuan Peminjaman</a>
                         @endcan
+
                         <table id="example1" class="table table-bordered table-striped">
                             <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>Nama user</th>
-                                    <th>Email</th>
-                                    <th>Role</th>
-                                    <th>Tanggal Buat</th>
-                                    <th>Tanggal Ubah</th>
+                                    <th>Kode Transaksi</th>
+                                    <th>Nama Peminjam</th>
+                                    <th>Status</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse ($users as $user)
+                                @forelse ($pinjaman as $pj)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $user->name }}</td>
-                                        <td>{{ $user->email }}</td>
-                                        <td>{{ $user->roles->first()->name }}</td>
-                                        <td>{{ $user->created_at }}</td>
-                                        <td>{{ $user->updated_at }}</td>
                                         <td>
-                                            {{-- <a href="{{ route('users.show', $user->email) }}" class="btn btn-primary"><i
-                                                    class="fas fa-eye"></i> Detail</a> --}}
-                                            @if ($user->name != 'SuperAdmin')
-                                                @can('user_update')
-                                                    <a href="{{ route('users.edit', ['user' => $user]) }}"
-                                                        class="btn btn-success"><i class="fas fa-pen-square"></i> Edit</a>
-                                                @endcan
-                                                @can('user_delete')
+                                            <a href="{{ route('pinjaman.show', $pj->id) }}">{{ $pj->id_transaksi }}</a>
+                                        </td>
+                                        <td>{{ $pj->user->name }}</td>
+                                        <td>
+                                            @if ($pj->status == '1')
+                                                <span class="badge badge-warning">Menuggu Disetujui</span>
+                                            @elseif ($pj->status == '2')
+                                                <span class="badge badge-secondary">Disetujui - Silahkan mengambil
+                                                    barang</span>
+                                            @elseif ($pj->status == '3')
+                                                <span class="badge badge-primary">Sudah diambil oleh
+                                                    {{ $pj->user->name }}</span>
+                                            @elseif ($pj->status == '4')
+                                                <span class="badge badge-danger">Ditolak dengan alasan :
+                                                    {{ $pj->keterangan }}</span>
+                                            @elseif ($pj->status == '5')
+                                                <span class="badge badge-success">Sudah Dikembalikan</span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @can('pinjam_detail')
+                                                <a href="{{ route('pinjaman.show', $pj->id) }}" class="btn btn-primary"><i
+                                                        class="fas fa-eye"></i> Detail</a>
+                                            @endcan
+
+                                            {{-- <a href="{{ route('pinjaman.edit', $pj->id) }}"
+                                                    class="btn btn-success"><i class="fas fa-pen-square"></i> Edit</a> --}}
+                                            @can('kembali_detail')
+                                                @if ($pj->status == '3')
+                                                    <a href="{{ route('kembali.show', $pj->id) }}" class="btn btn-primary"><i
+                                                            class="fas fa-sign-out-alt"></i> Kembali Asset</a>
+                                                @endif
+                                            @endcan
+
+                                            @can('pinjam_delete')
+                                                @if (in_array($pj->status, ['1', '4']))
                                                     <form class="d-inline" method="post" role="alert"
-                                                        action="{{ route('users.destroy', ['user' => $user]) }}">
+                                                        action="{{ route('pinjaman.destroy', $pj->id_transaksi) }}">
                                                         @csrf
                                                         @method('delete')
                                                         <button type="submit" class="btn btn-danger">
                                                             <i class="fas fa-trash"></i> Hapus</a>
                                                         </button>
                                                     </form>
-                                                @endcan
-                                            @else
-                                                <i><strong>Not Access</strong></i>
-                                            @endif
-
-
-
+                                                @endif
+                                            @endcan
                                         </td>
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="7" class="text-center"><strong>Data Role Kosong</strong></td>
+                                        <td colspan="6" class="text-center"><strong>Data Pinjaman Kosong</strong></td>
                                     </tr>
                                 @endforelse
                             </tbody>
@@ -110,17 +127,8 @@
                 "responsive": true,
                 "lengthChange": false,
                 "autoWidth": false,
-                // "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+                "buttons": ["excel", "pdf", "print"]
             }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-            $('#example2').DataTable({
-                "paging": true,
-                "lengthChange": false,
-                "searching": false,
-                "ordering": true,
-                "info": true,
-                "autoWidth": false,
-                "responsive": true,
-            });
         });
     </script>
 @endpush
@@ -133,7 +141,7 @@
                 event.preventDefault();
                 // alert('Hallo');
                 Swal.fire({
-                    title: 'Hapus User',
+                    title: 'Hapus Asset',
                     text: "Apakah anda yakin menghapus data ini?",
                     icon: 'warning',
                     showCancelButton: true,

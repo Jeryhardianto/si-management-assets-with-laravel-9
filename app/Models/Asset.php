@@ -15,19 +15,20 @@ class Asset extends Model
         'satuan_id',
         'kategori_id',
         'golongan_id',
-        'nomor_unit',
-        'kode_perkiraan',
         'kode_asset',
-        'sub_kode',
         'lokasi',
         'uraian',
         'harga',
         'jumlah',
         'masa',
         'kondisi',
+        'gambar',
         'created_at',
         'updated_at',
     ];
+
+
+
     // Relationship to kategori
     public function kategori()
     {

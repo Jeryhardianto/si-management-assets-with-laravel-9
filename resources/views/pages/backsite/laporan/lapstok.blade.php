@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Laporan Asset')
+@section('title', 'Laporan Stok')
 @section('content')
 
     <!-- BEGIN: Content-->
@@ -9,12 +9,12 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0">Laporan Assets</h1>
+                        <h1 class="m-0">Laporan Stok</h1>
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             {{-- <li class="breadcrumb-item"><a href="#">Home</a></li> --}}
-                            <li class="breadcrumb-item active">Laporan Assets</li>
+                            <li class="breadcrumb-item active">Laporan Stok</li>
                         </ol>
                     </div><!-- /.col -->
                 </div><!-- /.row -->
@@ -38,12 +38,8 @@
                                     <th>No</th>
                                     <th>Kategori Assets</th>
                                     <th>Kode Asset</th>
-                                    <th>Lokasi</th>
                                     <th>Nama Assets</th>
-                                    <th>Harga</th>
-                                    <th>Jumlah</th>
-                                    <th>Masa</th>
-                                    <th>Kondisi</th>
+                                    <th>Jumlah Stok</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -52,19 +48,8 @@
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $asset->kategori->nama_kategori }}</td>
                                         <td>{{ 'PDAM-'.sprintf("%05d", $asset->kode_asset) }}</td>
-                                        <td>{{ $asset->lokasi }}</td>
                                         <td>{{ $asset->uraian }}</td>
-                                        <td>{{ Rupiah($asset->harga) }}</td>
                                         <td>{{ $asset->jumlah }}</td>
-                                        <td>{{ $asset->masa }}</td>
-                                        <td>
-                                            @if ($asset->kondisi == 'Baik')
-                                            <span class="badge badge-success">{{ $asset->kondisi }}</span>
-                                            @else
-                                            <span class="badge badge-danger">{{ $asset->kondisi }}</span>
-
-                                            @endif
-                                        </td>
                                       
                                     </tr>
                                 @empty
@@ -96,15 +81,6 @@
                 "autoWidth": false,
                 "buttons": ["excel", "pdf", "print"]
             }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-            $('#example2').DataTable({
-                "paging": true,
-                "lengthChange": false,
-                "searching": false,
-                "ordering": true,
-                "info": true,
-                "autoWidth": false,
-                "responsive": true,
-            });
         });
     </script>
 @endpush

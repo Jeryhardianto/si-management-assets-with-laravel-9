@@ -141,6 +141,7 @@ class RoleController extends Controller
          return redirect()->route('role.index');
         } catch (\Throwable $th) {
          DB::rollBack();
+        //  dd($th->getMessage());
          Alert::error('Gagal','Data gagal diubah!');
          return redirect()->back()->withInput($request->all());
         }finally{

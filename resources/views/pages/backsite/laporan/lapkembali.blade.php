@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Laporan Asset')
+@section('title', 'Laporan Pengembalian')
 @section('content')
 
     <!-- BEGIN: Content-->
@@ -9,12 +9,12 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0">Laporan Assets</h1>
+                        <h1 class="m-0">Laporan Pengembalian</h1>
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             {{-- <li class="breadcrumb-item"><a href="#">Home</a></li> --}}
-                            <li class="breadcrumb-item active">Laporan Assets</li>
+                            <li class="breadcrumb-item active">Laporan Pengembalian</li>
                         </ol>
                     </div><!-- /.col -->
                 </div><!-- /.row -->
@@ -32,44 +32,50 @@
                     <!-- /.card-header -->
 
                     <div class="card-body">
+                        <form action="{{ route('laporan_kembali') }}" method="get" target="_blank">
+                            <div class="row">
+                                <div class="col-4 ">
+                                    <div class="form-group d-flex">
+                                        <label>Dari:</label>
+                                        <input class="form-control" type="date" name="tgl_mulai">
+                                        <label>Ke:</label>
+                                        <input class="form-control" type="date" name="tgl_selesai">&nbsp;&nbsp;
+                                        <button type="submit" class="btn btn-success"> Cetak</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
                         <table id="example1" class="table table-bordered table-striped">
                             <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>Kategori Assets</th>
-                                    <th>Kode Asset</th>
-                                    <th>Lokasi</th>
-                                    <th>Nama Assets</th>
-                                    <th>Harga</th>
-                                    <th>Jumlah</th>
-                                    <th>Masa</th>
-                                    <th>Kondisi</th>
+                                    <th>Kode Transaksi</th>
+                                    <th>Nama Peminjam</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse ($assets as $asset)
+                                @forelse ($kembali as $pj)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $asset->kategori->nama_kategori }}</td>
-                                        <td>{{ 'PDAM-'.sprintf("%05d", $asset->kode_asset) }}</td>
-                                        <td>{{ $asset->lokasi }}</td>
-                                        <td>{{ $asset->uraian }}</td>
-                                        <td>{{ Rupiah($asset->harga) }}</td>
-                                        <td>{{ $asset->jumlah }}</td>
-                                        <td>{{ $asset->masa }}</td>
                                         <td>
-                                            @if ($asset->kondisi == 'Baik')
-                                            <span class="badge badge-success">{{ $asset->kondisi }}</span>
-                                            @else
-                                            <span class="badge badge-danger">{{ $asset->kondisi }}</span>
-
-                                            @endif
+                                            <a href="{{ route('kembali.detail', $pj->id) }}">{{ $pj->id_transaksi }}</a>
                                         </td>
-                                      
+                                        <td>{{ $pj->pinjam->name }}</td>
+                                        <td>
+                                                <span class="badge badge-success">Sudah Dikembalikan</span>
+                                        </td>
+                                        <td>
+                                            <a href="{{ route('kembali.detail', $pj->id_transaksi) }}" class="btn btn-primary"><i
+                                                    class="fas fa-eye"></i> Detail</a>
+                                         
+
+                                        </td>
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="12" class="text-center"><strong>Data Assets Kosong</strong></td>
+                                        <td colspan="6" class="text-center"><strong>Data Pengembalian Kosong</strong></td>
                                     </tr>
                                 @endforelse
                             </tbody>
@@ -91,19 +97,7 @@
     <script>
         $(function() {
             $("#example1").DataTable({
-                "responsive": true,
-                "lengthChange": false,
-                "autoWidth": false,
-                "buttons": ["excel", "pdf", "print"]
-            }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-            $('#example2').DataTable({
-                "paging": true,
-                "lengthChange": false,
-                "searching": false,
-                "ordering": true,
-                "info": true,
-                "autoWidth": false,
-                "responsive": true,
+                "responsive": true
             });
         });
     </script>

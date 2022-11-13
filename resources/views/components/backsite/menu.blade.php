@@ -88,16 +88,84 @@
                 </li>
                 @endcan
 
-                <li class="nav-header">Laporan</li>
+                @if (auth()->user()->can('pinjam_show') || auth()->user()->can('kembali_show'))
+                <li class="nav-header">Transaksi</li>
+                @endif
+
+                @can('pinjam_show')
                     <li class="nav-item">
-                        <a href="{{ route('laporanassset.index') }}"
-                            class="nav-link {{ set_active(['laporanassset.index']) }}">
+                        <a href="{{ route('pinjaman.index') }}"
+                            class="nav-link {{ set_active(['pinjaman.index', 'pinjaman.show', 'pinjaman.create', 'pinjaman.edit', 'kembali.show']) }}">
                             <i class="nav-icon fas fa-newspaper"></i>
                             <p>
-                                Laporan Asset
+                                Peminjaman
                             </p>
                         </a>
                     </li>
+                @endcan
+                @can('kembali_show')
+                    <li class="nav-item">
+                        <a href="{{ route('kembali.index') }}"
+                            class="nav-link {{ set_active(['kembali.index','kembali.detail']) }}">
+                            <i class="nav-icon fas fa-newspaper"></i>
+                            <p>
+                                Pengembalian
+                            </p>
+                        </a>
+                    </li>
+                @endcan
+                @if (auth()->user()->can('laporan_show') || auth()->user()->can('laporan_pinjam') || auth()->user()->can('laporan_kembali') || auth()->user()->can('laporan_stok'))
+                <li class="nav-header">Laporan</li>
+                @endif
+
+                @can('laporan_show')
+                <li class="nav-item">
+                    <a href="{{ route('laporanassset.index') }}"
+                        class="nav-link {{ set_active(['laporanassset.index']) }}">
+                        <i class="nav-icon fas fa-newspaper"></i>
+                        <p>
+                            Laporan Asset
+                        </p>
+                    </a>
+                </li>                
+                @endcan
+
+                @can('laporan_stok')
+                <li class="nav-item">
+                    <a href="{{ route('laporan_stok.stok') }}"
+                        class="nav-link {{ set_active(['laporan_stok.stok']) }}">
+                        <i class="nav-icon fas fa-newspaper"></i>
+                        <p>
+                            Laporan Stok
+                        </p>
+                    </a>
+                </li>                
+                @endcan
+
+                @can('laporan_pinjam')
+                <li class="nav-item">
+                    <a href="{{ route('laporan_pinjam.pinjam') }}"
+                        class="nav-link {{ set_active(['laporan_pinjam.pinjam']) }}">
+                        <i class="nav-icon fas fa-newspaper"></i>
+                        <p>
+                            Laporan Peminjaman
+                        </p>
+                    </a>
+                </li>                
+                @endcan
+
+                @can('laporan_kembali')
+                <li class="nav-item">
+                    <a href="{{ route('laporan_kembali.kembali') }}"
+                        class="nav-link {{ set_active(['laporan_kembali.kembali']) }}">
+                        <i class="nav-icon fas fa-newspaper"></i>
+                        <p>
+                            Laporan Pengembalian
+                        </p>
+                    </a>
+                </li>                
+                @endcan
+               
 
                     @if (auth()->user()->can('role_show') || auth()->user()->can('user_show'))
                     <li class="nav-header">Manegement User</li>
