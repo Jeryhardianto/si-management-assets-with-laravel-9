@@ -63,6 +63,7 @@ class Pinjaman extends Controller
     {
       try {
         DB::beginTransaction();
+
         $id_transaksi = 'P-'.time();
         ModelsPinjaman::create([
             'id_transaksi' =>  $id_transaksi,

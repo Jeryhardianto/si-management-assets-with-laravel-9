@@ -75,8 +75,8 @@
                                     <option value="0">-- Pilih Nama Asset ---</option>
                                     @forelse ($assets as $as)
                                         <option value="{{ $as->id }}" nama-asset="{{ $as->uraian }}"
-                                            kode-asset="{{ 'PDAM-' . sprintf('%05d', $as->kode_asset) }}">
-                                            {{ 'PDAM-' . sprintf('%05d', $as->kode_asset) }}-{{ $as->uraian }}</option>
+                                            kode-asset="{{ 'PDAM-' . sprintf('%05d', $as->kode_asset) }}" stok="{{ $as->jumlah }}">
+                                            {{ 'PDAM-' . sprintf('%05d', $as->kode_asset) }}-{{ $as->uraian }}-[Stok:{{ $as->jumlah }}]</option>
                                     @empty
                                         <option>Asset kosong</option>
                                     @endforelse
@@ -91,7 +91,7 @@
 
                             <div class="form-group">
                                 <label for="jumlah">Jumlah</label>
-                                <input type="text" id="jumlah" name="jumlah" value="{{ old('jumlah') }}"
+                                <input type="text" id="jumlah" name="jumlah" value="{{ old('jumlah') }}" onchange="cekStok()"
                                     class="form-control @error('jumlah') is-invalid @enderror" placeholder="Masukan jumlah">
                                 @error('jumlah')
                                     <span class="invalid-feedback">
@@ -102,7 +102,7 @@
 
                         </div>
                         <div class="card-footer">
-                            <button type="button" onclick="detailAsset()" class="btn btn-primary"><i
+                            <button type="button" id="simpan" onclick="detailAsset()" class="btn btn-primary"><i
                                     class="fas fa-plus"></i>
                                 Tambah</button>
                         </div>
@@ -132,7 +132,7 @@
 
                             </div>
                             <div class="card-footer">
-                                <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Simpan</button>
+                                <button type="submit"  class="btn btn-primary"><i class="fas fa-save"></i> Simpan</button>
                             </div>
                         </div>
                 </form>
@@ -147,6 +147,7 @@
 @push('javascript-internal')
     <script>
         $(function() {
+            $("#simpan").prop('disabled', true);
             $('#namaasset').select2({
                 theme: 'bootstrap4',
                 allowClear: true
@@ -186,6 +187,26 @@
                 updateRow(table.rows[i], i, false);
                 i++;
             }
+        }
+      
+
+        function cekStok(){
+            let stok = $('#namaasset').find("option:selected").attr("stok");
+            let jumlah = $('#jumlah').val();
+
+            if(jumlah > stok){
+                Swal.fire(
+                'Peringatan!',
+                'Stok tidak cukup!',
+                'error'
+                )
+                $("#simpan").prop('disabled', true);
+                
+            }else{
+                $("#simpan").prop('disabled', false);
+
+            }
+
         }
 
         $(document).ready(function() {

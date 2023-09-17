@@ -98,7 +98,7 @@ class AssetController extends Controller
             "harga" => "required",
             "jumlah" => "required",
             "satuan" => "required",
-            "golongan" => "required",
+            // "golongan" => "required",
             "masa" => "required",
             'gambar'        => 'required|mimes:jpg,png,jpeg|max:4069',
             "kondisi" => "required"
@@ -108,7 +108,7 @@ class AssetController extends Controller
         if ($validator->fails()){
             $request['kategori'] = Kategori::select('id', 'nama_kategori')->find($request->kategori);
             $request['satuan'] = Satuan::select('id', 'nama_satuan')->find($request->satuan);
-            $request['golongan'] = Golongan::select('id', 'nama_golongan')->find($request->golongan);
+            // $request['golongan'] = Golongan::select('id', 'nama_golongan')->find($request->golongan);
             return redirect()->back()->withInput($request->all())->withErrors($validator);
         }
 
@@ -136,7 +136,7 @@ class AssetController extends Controller
             "harga" => str_replace('.','' ,$request->harga),
             "jumlah" => $request->jumlah,
             "satuan_id" => $request->satuan,
-            "golongan_id" => $request->golongan,
+            // "golongan_id" => $request->golongan,
             "masa" => $request->masa,
             "kondisi" => $request->kondisi,
             'gambar' =>  $data['gambar'],

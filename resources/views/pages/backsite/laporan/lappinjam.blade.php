@@ -94,18 +94,18 @@
                                                 @endif
                                             @endcan
 
-                                            @can('pinjam_delete')
-                                                @if (in_array($pj->status, ['1', '4']))
-                                                    <form class="d-inline" method="post" role="alert"
-                                                        action="{{ route('pinjaman.destroy', $pj->id_transaksi) }}">
-                                                        @csrf
-                                                        @method('delete')
-                                                        <button type="submit" class="btn btn-danger">
-                                                            <i class="fas fa-trash"></i> Hapus</a>
-                                                        </button>
-                                                    </form>
-                                                @endif
-                                            @endcan
+{{--                                            @can('pinjam_delete')--}}
+{{--                                                @if (in_array($pj->status, ['1', '4']))--}}
+{{--                                                    <form class="d-inline" method="post" role="alert"--}}
+{{--                                                        action="{{ route('pinjaman.destroy', $pj->id_transaksi) }}">--}}
+{{--                                                        @csrf--}}
+{{--                                                        @method('delete')--}}
+{{--                                                        <button type="submit" class="btn btn-danger">--}}
+{{--                                                            <i class="fas fa-trash"></i> Hapus</a>--}}
+{{--                                                        </button>--}}
+{{--                                                    </form>--}}
+{{--                                                @endif--}}
+{{--                                            @endcan--}}
                                         </td>
                                     </tr>
                                 @empty

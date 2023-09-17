@@ -65,7 +65,7 @@
                     </li>
                  @endcan
                 
-                 @can('golongan_show')
+                 {{-- @can('golongan_show')
                 <li class="nav-item">
                     <a href="{{ route('golongan.index') }}"
                         class="nav-link {{ set_active(['golongan.index', 'golongan.show', 'golongan.create', 'golongan.edit']) }}">
@@ -75,7 +75,7 @@
                         </p>
                     </a>
                 </li> 
-                @endcan
+                @endcan --}}
                 @can('satuan_show')
                   <li class="nav-item">
                     <a href="{{ route('satuan.index') }}"
